@@ -29,7 +29,7 @@ func TestParseMemInfo(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	if total != 16318480 || avail != 8000000 {
 		t.Errorf("got total=%d avail=%d", total, avail)
 	}

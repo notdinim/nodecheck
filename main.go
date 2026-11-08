@@ -8,7 +8,7 @@ import (
 )
 
 // goreleaser will handle replacing version at build time
-var version = "dev" 
+var version = "dev"
 
 func main() {
 	jsonOut := flag.Bool("json", false, "prints report in json format")
@@ -18,7 +18,7 @@ func main() {
 	if *showVersion {
 
 		fmt.Println("nodecheck", version)
-		return;
+		return
 	}
 
 	report := collect()
@@ -31,7 +31,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "error:", err)
 			os.Exit(1)
 		}
-	} else{
+	} else {
 		printText(report)
 	}
 

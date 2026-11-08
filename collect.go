@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-// struct for machines attributes 
+// struct for machines attributes
 
 type Report struct {
 	Hostname    string   `json:"hostname"`
@@ -58,8 +58,6 @@ func parseLoadAvg(s string) (float64, error) {
 	return strconv.ParseFloat(fields[0], 64)
 }
 
-
-
 // returns MemTotal and MemAvailable in kB from /proc/meminfo.
 func parseMemInfo(s string) (totalKB, availKB uint64, err error) {
 	sc := bufio.NewScanner(strings.NewReader(s))
@@ -80,8 +78,6 @@ func parseMemInfo(s string) (totalKB, availKB uint64, err error) {
 			availKB = v
 		}
 	}
-	
-
 
 	if totalKB == 0 {
 		return 0, 0, fmt.Errorf("MemTotal not found")
@@ -120,6 +116,6 @@ func evaluate(r Report) []string {
 	if r.DiskTotalGB > 0 && r.DiskFreeGB/r.DiskTotalGB < 0.10 {
 		w = append(w, "low disk: under 10% free on /")
 	}
-	
+
 	return w
 }
