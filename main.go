@@ -31,8 +31,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "error:", err)
 			os.Exit(1)
 		}
-	}
-	else{
+	} else{
 		printText(report)
 	}
 
