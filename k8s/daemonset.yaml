@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nodecheck
+  labels:
+    app: nodecheck
+spec:
+  selector:
+    matchLabels:
+      app: nodecheck
+  template:
+    metadata:
+      labels:
+        app: nodecheck
+    spec:
+      tolerations:
+        - operator: Exists # also run on the control-plane node
+      containers:
+        - name: nodecheck
+          image: nodecheck:local
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - while true; do nodecheck --proc /host/proc; echo "---"; sleep 30; done
+          env:
+            - name: NODE_NAME # the real node's name, via the API
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+          volumeMounts:
+            - name: host-proc
+              mountPath: /host/proc
+              readOnly: true
+      volumes:
+        - name: host-proc
+          hostPath:
+            path: /proc # the node's real /proc
