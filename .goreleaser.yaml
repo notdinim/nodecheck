@@ -1,0 +1,32 @@
+version: 2
+
+project_name: nodecheck
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0 # static binary so the tool can run on any linux distro
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+nfpms:
+  - package_name: nodecheck
+    vendor: Chukwudinim Onyige
+    homepage: https://github.com/notdinim/nodecheck
+    maintainer: Chukwudinim Onyige <dinimonyige@gmail.com>
+    description: Health report for a Linux node (CPU, memory, disk, GPU)
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+
+checksum:
+  name_template: checksums.txt
