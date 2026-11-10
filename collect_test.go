@@ -56,3 +56,20 @@ func TestEvaluate(t *testing.T) {
 		})
 	}
 }
+
+func TestParseCgroupLimit(t *testing.T) {
+	tests := []struct {
+		in   string
+		want uint64
+	}{
+		{"max\n", 0},                 // cgroup v2, no limit
+		{"536870912\n", 512},         // 512 MB
+		{"9223372036854771712\n", 0}, // cgroup v1, effectively unlimited
+		{"garbage", 0},
+	}
+	for _, tc := range tests {
+		if got := parseCgroupLimit(tc.in); got != tc.want {
+			t.Errorf("parseCgroupLimit(%q) = %d, want %d", tc.in, got, tc.want)
+		}
+	}
+}
